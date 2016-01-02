@@ -22,9 +22,9 @@ class TestCardsDeck:
             self.deck['abc']
 
     def test_shuffle(self):
-        card = self.deck[0]
+        old_deck = self.deck._deck[:]
         self.deck.shuffle()
-        assert not self.deck[0] == card
+        assert self.deck._deck != old_deck
 
     def test_deal(self):
         card = self.deck.deal()
@@ -33,6 +33,9 @@ class TestCardsDeck:
     def test_deal_len(self):
         self.deck.deal()
         assert len(self.deck) < 52
+
+    def test_str(self):
+        assert str(self.deck)
 
 
 class TestPlayer:
@@ -71,7 +74,7 @@ class TestPlayer:
 class TestTable:
 
     def setup_class(self):
-        self.table = cards.Table(3)
+        self.table = cards.Table(max_players=3)
         self.card = self.table.deck[0]
         self.another_card = self.table.deck[1]
         self.player1 = cards.Player('testPlayer1')
@@ -128,6 +131,10 @@ class TestTable:
         self.table.sit_player(self.player2)
         self.table.sit_player(self.player3)
         assert self.table.players == self.players
+
+    def test_sit_player_again_exception(self):
+        with pytest.raises(AttributeError):
+            self.table.sit_player(self.player1)
 
     def test_max_players(self):
         with pytest.raises(IndexError):

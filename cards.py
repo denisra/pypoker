@@ -16,6 +16,10 @@ class CardsDeck:
 
     def __len__(self):
         return len(self._deck)
+    #
+    # def __eq__(self, other):
+    #     return (len(self) == len(other) and
+    #             all(a == b for a, b in zip(self, other)))
 
     def __getitem__(self, index):
         return self._deck[index]
@@ -28,6 +32,9 @@ class CardsDeck:
 
     def deal(self):
         return self._deck.pop(0)
+
+    def __str__(self):
+        return str(list(self._deck))
 
 
 class Player:
@@ -82,10 +89,13 @@ class Table:
         self._cards.clear()
 
     def sit_player(self, player):
+        if player in self.players:
+            raise AttributeError('Player is already on the table.')
         if len(self._players) < self._max_players:
             self._players.append(player)
         else:
-            raise IndexError('No more available seats. Maximum number of players reached.')
+            raise IndexError('No more available seats. Maximum number of '
+                             'players reached.')
 
     def remove_player(self, player):
         self._players.remove(player)
