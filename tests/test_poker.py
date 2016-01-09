@@ -1,5 +1,5 @@
 import pytest
-import poker
+from pypoker import poker
 
 
 class TestPokerPlayer:

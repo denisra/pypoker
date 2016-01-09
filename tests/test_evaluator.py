@@ -1,6 +1,5 @@
-import pytest
-from cards import *
-from evaluator import *
+from pypoker.cards import *
+from pypoker.evaluator import *
 
 
 class TestSetup:

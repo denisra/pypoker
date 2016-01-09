@@ -1,5 +1,5 @@
 import pytest
-import cards
+from pypoker import cards
 
 
 class TestCardsDeck:

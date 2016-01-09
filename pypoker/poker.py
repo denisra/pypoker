@@ -1,4 +1,4 @@
-from cards import Card, CardsDeck, Player, Table
+from pypoker.cards import CardsDeck, Player, Card, Table
 
 
 class NotEnoughChips(Exception):
