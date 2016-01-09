@@ -1,3 +1,9 @@
+'''
+Poker Hand Evaluator module.
+Most of the logic was borrowed from Professor's Peter Norvig CS212 course.
+'''
+
+
 from collections import namedtuple
 
 HandValue = namedtuple('HandValue', ['value', 'hand', 'ranks'])

@@ -18,6 +18,7 @@ class TestSetup:
         self.pair = Hand(self.deck[3:12:3] + self.deck[11:25:13]) # [5S, 8S, JS, KS, KD]
         self.high_card = Hand(self.deck[9:18:2]) # [JS, KS, 2D, 4D, 6D]
         self.high_card_A = Hand(self.deck[9:26:4]) # [JS, 2D, 6D, TD, AD]
+        self.seven_card_straight_flush = Hand(self.deck[5:12])
 
 
 class TestHand(TestSetup):
@@ -63,6 +64,9 @@ class TestEvaluator(TestSetup):
         assert ev_pair.kind(2)
         ev_high_card = Evaluator(self.high_card)
         #assert ev_high_card.
+        ev_seven_card_straight_flush = Evaluator(self.seven_card_straight_flush)
+        assert ev_seven_card_straight_flush.straight()
+        assert ev_seven_card_straight_flush.flush()
 
         ###### Evaluate hand_value method #####
         assert ev_royal_flush.hand_value() == HandValue(900, None, None)
@@ -92,5 +96,3 @@ class TestEvaluator(TestSetup):
         assert Evaluator.best_hand([self.flush, self.full_house, self.pair]) == [self.full_house]
         assert Evaluator.best_hand([self.high_card, self.high_card_A]) == [self.high_card_A]
         assert Evaluator.best_hand([self.high_card_A, self.three_of_kind]) == [self.three_of_kind]
-
-
