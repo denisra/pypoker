@@ -73,6 +73,8 @@ class PokerTable(Table):
     def deal_cards(self):
         if not self.game_started:
             raise GameNotStarted()
+        self._deck = CardsDeck()
+        self.deck.shuffle()
         for n in range(self.cards_per_player):
             for player in self.players:
                 if len(player.cards) >= self.cards_per_player:
@@ -86,3 +88,24 @@ class PokerTable(Table):
             self.receive_card(card)
 
 #class Game:
+
+
+def test_play(num_playes=2):
+    table = PokerTable()
+    players = [
+        PokerPlayer('p1'),
+        PokerPlayer('p2'),
+        PokerPlayer('p3'),
+        PokerPlayer('p4'),
+        PokerPlayer('p5')
+    ]
+
+    for p in players:
+        table.sit_player(p)
+    table.start_game()
+    table.deal_cards()
+    print('Board = {}'.format(table.cards))
+    for p in players:
+        print('{} cards = {}'.format(p.name, p.cards))
+
+

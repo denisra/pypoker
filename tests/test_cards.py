@@ -42,8 +42,8 @@ class TestPlayer:
 
     def setup_class(self):
         self.player = cards.Player('testPlayer')
-        self.card = cards.Card('J', 'hearts')
-        self.another_card = cards.Card('A', 'clubs')
+        self.card = cards.Card('11', 'hearts')
+        self.another_card = cards.Card('14', 'clubs')
 
     def test_player_name(self):
         assert self.player.name == 'testPlayer'

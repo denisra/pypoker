@@ -7,7 +7,12 @@ Card = namedtuple('Card', ['rank', 'suit'])
 
 class CardsDeck:
 
-    ranks = [str(x) for x in range(2, 11)] + list('JQKA')
+    ''' Deck of cards representation.
+        Jacks = 11, Queens = 12, Kings = 13, Aces = 14
+    '''
+
+    ranks = [str(x) for x in range(2, 10)] + list('TJQKA')
+    #ranks = [str(x) for x in range(2, 15)]
     suits = ['spades', 'diamonds', 'clubs', 'hearts']
 
     def __init__(self):
