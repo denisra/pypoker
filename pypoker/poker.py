@@ -1,4 +1,6 @@
 from pypoker.cards import CardsDeck, Player, Card, Table
+from pypoker.evaluator import Hand, Evaluator
+
 
 
 class NotEnoughChips(Exception):
@@ -15,6 +17,7 @@ class GameNotStarted(Exception):
 
 class TooManyCards(Exception):
     pass
+
 
 class PokerPlayer(Player):
 
@@ -68,7 +71,7 @@ class PokerTable(Table):
         else:
             raise NotEnoughPlayers('Only {} players sit. Minimum of {} players '
                                    'required to start a game.'.format(len(
-                self.players), self.min_players))
+                                    self.players), self.min_players))
 
     def deal_cards(self):
         if not self.game_started:
@@ -87,25 +90,63 @@ class PokerTable(Table):
             card = self.deck.deal()
             self.receive_card(card)
 
-#class Game:
+# class Game:
 
 
-def test_play(num_playes=2):
+def test_play(num_players=2):
     table = PokerTable()
-    players = [
-        PokerPlayer('p1'),
-        PokerPlayer('p2'),
-        PokerPlayer('p3'),
-        PokerPlayer('p4'),
-        PokerPlayer('p5')
-    ]
+    players = [PokerPlayer(str(n)) for n in range(num_players)]
+    #     PokerPlayer('p1'),
+    #     PokerPlayer('p2'),
+    #     PokerPlayer('p3'),
+    #     PokerPlayer('p4'),
+    #     PokerPlayer('p5')
+    # ]
+
+    values = {  800: 'Straight Flush',
+                700: 'Four of a Kind',
+                600: 'Full House',
+                500: 'Flush',
+                400: 'Straight',
+                300: 'Three of Kind',
+                200: 'Two Pair',
+                100: 'One Pair',
+                0:   'High Card'
+                }
 
     for p in players:
         table.sit_player(p)
     table.start_game()
     table.deal_cards()
-    print('Board = {}'.format(table.cards))
-    for p in players:
-        print('{} cards = {}'.format(p.name, p.cards))
+    #print('Board = {}'.format(table.cards))
+    player_cards = [p.cards + table.cards for p in players]
+    #for p in player:
+    #    print('{} cards = {}'.format(p.name, p.cards))
+    #for p in player_cards:
+    #    print('cards: ', p)
+    #print()
+    hands = [Hand(cards) for cards in player_cards]
+    best_hand = Evaluator.best_hand(hands)
+    #print('Best Card: ', str(best_hand))
+    ev =  Evaluator(best_hand[0]).hand_value()
+    #print('Hand Value: ', values[ev.value])
+    return values[ev.value]
+
+if __name__ == '__main__':
+    from collections import Counter
+    import timeit
+    results = []
+    num_trials = 100000
+    start_time = timeit.default_timer()
+    for i in range(num_trials):
+        results.append(test_play(5))
+    counter = Counter(results)
+    #print(counter)
+    print(timeit.default_timer() - start_time)
+    for k,v in counter.items():
+        print(k, ' : ', 100 * v/num_trials, '%')
+
+
+
 
 

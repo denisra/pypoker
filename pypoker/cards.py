@@ -21,10 +21,6 @@ class CardsDeck:
 
     def __len__(self):
         return len(self._deck)
-    #
-    # def __eq__(self, other):
-    #     return (len(self) == len(other) and
-    #             all(a == b for a, b in zip(self, other)))
 
     def __getitem__(self, index):
         return self._deck[index]
@@ -33,7 +29,8 @@ class CardsDeck:
         self._deck[key] = value
 
     def shuffle(self):
-        random.shuffle(self._deck)
+        #random.shuffle(self._deck)
+        random.SystemRandom().shuffle(self._deck)
 
     def deal(self):
         return self._deck.pop(0)

@@ -19,6 +19,7 @@ class TestSetup:
         self.high_card = Hand(self.deck[9:18:2]) # [JS, KS, 2D, 4D, 6D]
         self.high_card_A = Hand(self.deck[9:26:4]) # [JS, 2D, 6D, TD, AD]
         self.seven_card_straight_flush = Hand(self.deck[5:12])
+        self.seven_card_royal_flush = Hand(self.deck[6:13])
 
 
 class TestHand(TestSetup):
@@ -39,11 +40,11 @@ class TestEvaluator(TestSetup):
 
     def test_evaluator(self):
         ev_royal_flush = Evaluator(self.royal_flush)
-        assert ev_royal_flush.royal_flush()
+        assert ev_royal_flush.straight_flush()
         ev_straight = Evaluator(self.straight)
         assert ev_straight.straight()
         assert not ev_straight.flush()
-        assert not ev_straight.royal_flush()
+        assert not ev_straight.straight_flush()
         ev_low_straight = Evaluator(self.low_straight)
         assert ev_low_straight.straight()
         assert ev_low_straight.flush() == False
@@ -63,15 +64,15 @@ class TestEvaluator(TestSetup):
         ev_pair = Evaluator(self.pair)
         assert ev_pair.kind(2)
         ev_high_card = Evaluator(self.high_card)
-        #assert ev_high_card.
+        #assert ev_high_card
         ev_seven_card_straight_flush = Evaluator(self.seven_card_straight_flush)
         assert ev_seven_card_straight_flush.straight()
         assert ev_seven_card_straight_flush.flush()
 
         ###### Evaluate hand_value method #####
-        assert ev_royal_flush.hand_value() == HandValue(900, None, None)
-        assert ev_straight_flush.hand_value() == HandValue(800, None, None)
-        assert ev_four_of_kind.hand_value() == HandValue(700, [2, 3], None)
+        assert ev_royal_flush.hand_value() == HandValue(800, None, self.royal_flush.ranks)
+        assert ev_straight_flush.hand_value() == HandValue(800, None, self.straight_flush.ranks)
+        assert ev_four_of_kind.hand_value() == HandValue(700, [2], self.four_of_kind.ranks)
         assert ev_full_house.hand_value() == HandValue(600, [2, 13], None)
         assert ev_flush.hand_value() == HandValue(500, None, self.flush.ranks)
         assert ev_straight.hand_value() == HandValue(400, None, self.straight.ranks)
